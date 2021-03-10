@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ong {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  phone     String?
+  city      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  Pet       Pet[]
+}
+
+model Pet {
+  id          Int      @id @default(autoincrement())
+  ongId       Int
+  name        String
+  category    String
+  birth       DateTime
+  gender      String
+  description String?
+  size        Int
+  color       String
+  castrated   Boolean  @default(false)
+  vaccinated  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  Ong         Ong      @relation(fields: [ongId], references: [id])
+}
+
+model User {
+  uid       String   @id
+  email     String   @unique
+  name      String
+  phone     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
